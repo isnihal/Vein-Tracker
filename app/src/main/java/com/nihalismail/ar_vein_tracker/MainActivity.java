@@ -2,20 +2,29 @@ package com.nihalismail.ar_vein_tracker;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.content.Context;
 import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.EditText;
 
+import com.devbrackets.android.exomedia.ui.widget.VideoView;
 import com.google.ar.sceneform.AnchorNode;
 import com.google.ar.sceneform.math.Vector3;
 import com.google.ar.sceneform.rendering.Color;
 import com.google.ar.sceneform.rendering.ExternalTexture;
 import com.google.ar.sceneform.rendering.ModelRenderable;
+import com.google.ar.sceneform.rendering.ViewRenderable;
 import com.google.ar.sceneform.ux.ArFragment;
+
+import java.util.concurrent.CompletableFuture;
 
 public class MainActivity extends AppCompatActivity {
 
-    private  ModelRenderable videoRenderable;
+    private  ViewRenderable viewRenderable;
     private float HEIGHT= 1.25f;
 
     @Override
@@ -29,43 +38,36 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
-        ExternalTexture externalTexture = new ExternalTexture();
-        MediaPlayer mediaPlayer = MediaPlayer.create(this, R.raw.video);
-        mediaPlayer.setSurface(externalTexture.getSurface());
-        mediaPlayer.setLooping(true);
-        ModelRenderable
-                .builder()
-                .setSource(this,R.raw.video_screen)
+        // inflate the layout
+        View myLayout = LayoutInflater.from(this).inflate(R.layout.ar_video_layout,null);
+        VideoView  videoView  = (VideoView) findViewById(R.id. arVideoView);
+        videoView.setVideoURI(Uri.parse("https://archive.org/download/Popeye_forPresident/Popeye_forPresident_512kb.mp4"));
+
+        //mediaPlayer.setLooping(true);
+        ViewRenderable.builder()
+                .setView(this, R.layout.ar_video_layout)
                 .build()
-                .thenAccept(modelRenderable -> {
-                    videoRenderable = modelRenderable;
-                    videoRenderable.getMaterial().setExternalTexture("videoTexture",externalTexture);
-                    videoRenderable.getMaterial().setFloat4("keyColor",new Color(0.01843f,1.0f,0.098f));
-                });
+                .thenAccept(renderable -> viewRenderable = renderable);
 
         ArFragment arFragment = (ArFragment) getSupportFragmentManager().findFragmentById(R.id.fragment);
 
         arFragment.setOnTapArPlaneListener((hitResult, plane, motionEvent) -> {
             AnchorNode anchorNode = new AnchorNode(hitResult.createAnchor());
 
-            if(!mediaPlayer.isPlaying()){
-                mediaPlayer.start();
-
-                externalTexture.getSurfaceTexture().setOnFrameAvailableListener(surfaceTexture -> {
-                    anchorNode.setRenderable(videoRenderable);
-                    externalTexture.getSurfaceTexture().setOnFrameAvailableListener(null);
-                });
+            if(!videoView.isPlaying()){
+                videoView.start();
+                anchorNode.setRenderable(viewRenderable);
             }
             else{
-                anchorNode.setRenderable(videoRenderable);
+                anchorNode.setRenderable(viewRenderable);
             }
 
-            float width = mediaPlayer.getVideoWidth();
-            float height  = mediaPlayer.getVideoHeight();
+            float width = 1;
+            float height  = 1;
 
-            anchorNode.setLocalScale(new Vector3(HEIGHT *(width/height),HEIGHT,1.0f));
+            //anchorNode.setLocalScale(new Vector3(HEIGHT *(width/height),HEIGHT,1.0f));
 
-            arFragment.getArSceneView().getScene().addChild(anchorNode);
+            //arFragment.getArSceneView().getScene().addChild(anchorNode);
         });
     }
 }
