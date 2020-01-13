@@ -50,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
 
         //mediaPlayer.setLooping(true);
         ViewRenderable.builder()
-                .setView(this, R.layout.ar_video_layout)
+                .setView(this, linearLayout)
                 .build()
                 .thenAccept(renderable -> viewRenderable = renderable);
 
