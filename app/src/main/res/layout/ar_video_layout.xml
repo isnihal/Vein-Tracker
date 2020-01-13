@@ -2,14 +2,15 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
+    android:id="@+id/ar_layout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:id="@+id/arvideolayout"
     tools:context=".MainActivity">
 
-    <com.devbrackets.android.exomedia.ui.widget.VideoView
-        android:id="@+id/arVideoView1"
-        android:layout_width="match_parent"
-        android:layout_height="400dp" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="NEED TO PLACE VIDEO HERE"
+        android:textColor="#fff"/>
 
 </LinearLayout>

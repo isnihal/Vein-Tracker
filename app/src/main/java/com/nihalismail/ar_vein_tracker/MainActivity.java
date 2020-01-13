@@ -9,7 +9,11 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.devbrackets.android.exomedia.ui.widget.VideoView;
 import com.google.ar.sceneform.AnchorNode;
@@ -40,8 +44,9 @@ public class MainActivity extends AppCompatActivity {
 
         // inflate the layout
         View myLayout = LayoutInflater.from(this).inflate(R.layout.ar_video_layout,null);
-        VideoView  videoView  = (VideoView) findViewById(R.id. arVideoView);
+        VideoView  videoView  = findViewById(R.id.arVideoView);
         videoView.setVideoURI(Uri.parse("https://archive.org/download/Popeye_forPresident/Popeye_forPresident_512kb.mp4"));
+        LinearLayout linearLayout  =  (LinearLayout) myLayout.findViewById(R.id.ar_layout);
 
         //mediaPlayer.setLooping(true);
         ViewRenderable.builder()
@@ -65,9 +70,9 @@ public class MainActivity extends AppCompatActivity {
             float width = 1;
             float height  = 1;
 
-            //anchorNode.setLocalScale(new Vector3(HEIGHT *(width/height),HEIGHT,1.0f));
+            anchorNode.setLocalScale(new Vector3(HEIGHT *(width/height),HEIGHT,1.0f));
 
-            //arFragment.getArSceneView().getScene().addChild(anchorNode);
+            arFragment.getArSceneView().getScene().addChild(anchorNode);
         });
     }
 }
