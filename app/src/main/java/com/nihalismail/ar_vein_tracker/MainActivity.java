@@ -56,23 +56,21 @@ public class MainActivity extends AppCompatActivity {
 
         ArFragment arFragment = (ArFragment) getSupportFragmentManager().findFragmentById(R.id.fragment);
 
-        arFragment.setOnTapArPlaneListener((hitResult, plane, motionEvent) -> {
-            AnchorNode anchorNode = new AnchorNode(hitResult.createAnchor());
+        AnchorNode anchorNode = new AnchorNode();
 
-            if(!videoView.isPlaying()){
-                videoView.start();
-                anchorNode.setRenderable(viewRenderable);
-            }
-            else{
-                anchorNode.setRenderable(viewRenderable);
-            }
+        if(!videoView.isPlaying()){
+            videoView.start();
+            anchorNode.setRenderable(viewRenderable);
+        }
+        else{
+            anchorNode.setRenderable(viewRenderable);
+        }
 
-            float width = 1;
-            float height  = 1;
+        float width = 1;
+        float height  = 1;
 
-            anchorNode.setLocalScale(new Vector3(HEIGHT *(width/height),HEIGHT,1.0f));
+        anchorNode.setLocalScale(new Vector3(HEIGHT *(width/height),HEIGHT,1.0f));
 
-            arFragment.getArSceneView().getScene().addChild(anchorNode);
-        });
+        arFragment.getArSceneView().getScene().addChild(anchorNode);
     }
 }
